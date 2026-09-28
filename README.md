@@ -30,8 +30,6 @@ Monseej Purkayastha<sup>1</sup>, Anindita Ghosh<sup>1,2</sup>, and Philipp Slusa
   </tr>
 </table>
 
-<sub>Playback slowed down 1.5×. MP4 versions in <a href="assets/videos">assets/videos</a>.</sub>
-
 > We present VISTA, a two-stage framework for generating stylized 3D human motion by fusing structural content from text prompts with expressive style from reference videos, without requiring jointly paired (text, video, stylized motion) triplets. A Dual-channel Autoencoder first maps motion sequences and video clips into a shared latent manifold. A masked autoregressive diffusion backbone then operates within this manifold, injecting video-derived style through a dedicated late-fusion Dual-AdaLN pathway while preserving text-conditioned content structure. A cross-batch unpaired training protocol with latent cycle consistency enables joint learning across separate semantically rich and stylistically diverse datasets. As a proof-of-concept for controllable animation synthesis, we validate VISTA on rendered motion-capture references: it achieves the highest style recognition accuracy among video-conditioned methods while preserving competitive content alignment, and its decomposed 3-way classifier-free guidance provides independent, user-controllable calibration of the content–style balance at inference time.
 
 ## Installation
