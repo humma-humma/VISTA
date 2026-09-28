@@ -45,7 +45,7 @@ or with pip in a Python 3.10 environment:
 # PyTorch (CUDA 12.6)
 pip install torch==2.8.0 torchvision==0.23.0 --index-url https://download.pytorch.org/whl/cu126
 
-pip install -r requirements.txt          # requirements-lock.txt: exact tested package set
+pip install -r requirements.txt
 ```
 
 `ffmpeg` and `git` must be on `PATH`. ViViT (`google/vivit-b-16x2-kinetics400`) and CLIP ViT-B/32 are

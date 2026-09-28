@@ -1,8 +1,8 @@
 # VISTA: training / evaluation / sampling / visualisation.
 # Install PyTorch matching your CUDA first, e.g.:
 #   pip install torch==2.8.0 torchvision==0.23.0 --index-url https://download.pytorch.org/whl/cu126
-# Versions below are the ones this release was tested with; requirements-lock.txt holds the
-# complete tested package set. The VE-100STYLES renderer has its own ve100styles/requirements.txt.
+# Versions below are the ones this release was tested with.
+# The VE-100STYLES renderer has its own ve100styles/requirements.txt.
 numpy==1.23.5
 scipy==1.15.3
 einops==0.8.1
