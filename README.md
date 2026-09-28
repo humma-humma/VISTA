@@ -3,8 +3,8 @@
 [![arXiv](https://img.shields.io/badge/arXiv-2609.23817-b31b1b.svg)](https://arxiv.org/abs/2609.23817)
 [![CVPR 2026 Workshop](https://img.shields.io/badge/CVPR%202026-MOMA%20Workshop-4b44ce.svg)](https://arxiv.org/abs/2609.23817)
 
-Official implementation of **VISTA: Video-Injected Stylized Text-to-Animation**
-(Multimodal Human Motion Analysis Workshop (MOMA) at CVPR 2026).
+Official implementation of **VISTA: Video-Injected Stylized Text-to-Animation**, presented at the
+Multimodal Human Motion Analysis Workshop (MOMA) at CVPR 2026.
 
 Monseej Purkayastha<sup>1</sup>, Anindita Ghosh<sup>1,2</sup>, and Philipp Slusallek<sup>1</sup>
 
@@ -206,14 +206,12 @@ python tools/aitviewer_interactive_render.py --motion_file <joints.npy>
 ## Citation
 
 ```bibtex
-@inproceedings{purkayastha2026vista,
-  title     = {{VISTA}: Video-Injected Stylized Text-to-Animation},
-  author    = {Purkayastha, Monseej and Ghosh, Anindita and Slusallek, Philipp},
-  booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Workshops,
-               Multimodal Human Motion Analysis Workshop (MOMA)},
-  year      = {2026},
-  eprint    = {2609.23817},
-  archivePrefix = {arXiv},
+@article{purkayastha2026vista,
+  title   = {{VISTA}: Video-Injected Stylized Text-to-Animation},
+  author  = {Purkayastha, Monseej and Ghosh, Anindita and Slusallek, Philipp},
+  journal = {arXiv preprint arXiv:2609.23817},
+  year    = {2026},
+  note    = {Presented at the Multimodal Human Motion Analysis Workshop (MOMA), CVPR 2026},
 }
 ```
 
