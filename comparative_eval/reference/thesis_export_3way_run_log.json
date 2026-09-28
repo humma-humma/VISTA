@@ -1,0 +1,21 @@
+{
+  "cfg_mode": "3way_additive",
+  "cfg_scale": 4.5,
+  "cfg_text": 4.5,
+  "cfg_style": 2.0,
+  "timesteps": 18,
+  "seed": 3407,
+  "checkpoint_key": "ema_mardm",
+  "model": "MARDM-DDPM-XL",
+  "style_routing": "diffmlp",
+  "use_weight_schedule": true,
+  "styled_total": 72,
+  "styled_failed": 0,
+  "base_total": 2380,
+  "base_failed": 0,
+  "transfer_total": 50,
+  "transfer_failed": 0,
+  "failed_styled": [],
+  "failed_base": [],
+  "failed_transfer": []
+}

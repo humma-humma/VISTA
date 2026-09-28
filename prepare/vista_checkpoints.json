@@ -1,0 +1,49 @@
+{
+  "_comment": "Released VISTA checkpoints. Fill in 'url' for each entry (Hugging Face / Zenodo / Google Drive / plain HTTPS). Paths are relative to the repository root. If a file is re-packed (e.g. optimizer state stripped), update sha256 and size.",
+  "checkpoints": {
+    "mardm": {
+      "path": "checkpoints/t2m/MARDM-DDPM-XL/model/final_diffmlp_diff_v4_cfg_cross_batch_hybrid_ema_fix.tar",
+      "description": "Stage-2 VISTA MARDM (use key ema_mardm); evaluation and export default",
+      "url": "",
+      "sha256": "6919636b46f06dbc26596f02019b9a2a1030c032a716a3ca61744d1e6208edac",
+      "size": 7829096825
+    },
+    "mardm_best_fid": {
+      "path": "checkpoints/t2m/MARDM-DDPM-XL/model/final_diffmlp_diff_v4_cfg_cross_batch_hybrid_ema_fix_best_fid.tar",
+      "description": "Stage-2 VISTA MARDM, best-FID snapshot; sample_new.py default",
+      "url": "",
+      "sha256": "58a01674a0402102e03e053f328ac0e2b5a88704520e5f89e984c736c5dd85c9",
+      "size": 7829129419
+    },
+    "dae": {
+      "path": "checkpoints/100styles/DAE/final_finetune_diffmlp_decoder_fixed_hybrid_ema_fix.tar",
+      "description": "DualAE with the decoder fine-tuned in Stage 2; evaluation / sampling",
+      "url": "",
+      "sha256": "4d85950cbeee730950490d1f4040eeaab71b57acd00cda04a8fc37405443b976",
+      "size": 3957253626
+    },
+    "style_classifier": {
+      "path": "checkpoints/style_classifier/style_classifier_final.pt",
+      "description": "Kinematic style classifier (21 classes); style-feature loss and SRA",
+      "url": "",
+      "sha256": "76e345f000b2a802e0b2ba22aeffbda1ddf33d08c45ca9c0050787a9e0cc35f7",
+      "size": 182795033
+    },
+    "dae_stage1": {
+      "path": "checkpoints/100styles/DAE/epoch_119_detach_nostyle_disc.tar",
+      "description": "Stage-1 DualAE (input to Stage-2 training only)",
+      "optional": true,
+      "url": "",
+      "sha256": "f4b37ec78268e832a3f57118e90483cbd15fd8df1dd542511f698bb8530b412f",
+      "size": 413195002
+    },
+    "refiner": {
+      "path": "checkpoints/refinement/refine_nofoot/best.tar",
+      "description": "Optional trajectory refinement net (--use_refinement)",
+      "optional": true,
+      "url": "",
+      "sha256": "e4256c7bed1424163150b85d23d0adbedde597375a9e24539e2326118b7bd874",
+      "size": 59160906
+    }
+  }
+}

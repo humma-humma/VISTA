@@ -1,0 +1,17 @@
+# VE-100STYLES renderer (independent of the VISTA training environment).
+# Tested with Python 3.10 and torch 2.9.1+cu126 (the renders matched the released videos at ~50 dB PSNR):
+#   pip install torch==2.9.1 --index-url https://download.pytorch.org/whl/cu126
+# CPU-only torch also works (SMPLify is ~4x slower). ffmpeg must be on PATH.
+numpy==1.26.4
+scipy==1.15.3
+smplx==0.1.28
+chumpy==0.71          # needed to unpickle SMPL_NEUTRAL.pkl
+h5py==3.15.1
+trimesh==3.23.5
+pyrender==0.1.45      # headless: export PYOPENGL_PLATFORM=egl (or osmesa)
+PyOpenGL==3.1.0
+imageio==2.37.2
+pillow==12.0.0
+tqdm==4.67.1
+gdown==5.2.0          # download_assets.sh
+moviepy               # optional (1.x or 2.x); without it frames are piped to the ffmpeg binary

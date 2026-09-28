@@ -1,0 +1,38 @@
+# VISTA: training / evaluation / sampling / visualisation.
+# Install PyTorch matching your CUDA first, e.g.:
+#   pip install torch==2.8.0 torchvision==0.23.0 --index-url https://download.pytorch.org/whl/cu126
+# Versions below are the ones this release was tested with; requirements-lock.txt holds the
+# complete tested package set. The VE-100STYLES renderer has its own ve100styles/requirements.txt.
+numpy==1.23.5
+scipy==1.15.3
+einops==0.8.1
+timm==1.0.9
+torchdiffeq==0.2.5
+transformers==4.56.1          # ViViT (google/vivit-b-16x2-kinetics400)
+huggingface-hub==0.34.4
+safetensors==0.4.5
+decord==0.6.0                 # video decoding for the style branch
+ftfy==6.1.1
+regex==2024.9.11
+git+https://github.com/openai/CLIP.git   # CLIP ViT-B/32 text encoder
+tqdm==4.67.1
+rich==14.3.3
+tensorboard==2.17.1
+wandb==0.21.4                 # only train_refinement.py logs to W&B
+scikit-learn==1.5.2
+pandas==2.0.3
+matplotlib==3.8.4
+seaborn==0.13.2
+gdown==5.2.0                  # prepare/download_pretrained.py
+chardet                       # optional: text-encoding detection in comparative_eval manifest builders
+
+# SMPL fitting / mesh export / visualisation
+smplx==0.1.28
+chumpy==0.71
+h5py==3.16.0
+trimesh==3.23.5
+imageio==2.37.0
+imageio-ffmpeg==0.6.0
+opencv-python==4.11.0.86
+pillow==11.3.0
+aitviewer==1.13.0             # optional: tools/aitviewer_interactive_render.py
