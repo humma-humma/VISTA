@@ -1296,7 +1296,9 @@ if __name__ == "__main__":
     
     # Model arguments
     parser.add_argument('--model', type=str, default='MARDM-DDPM-XL', choices=['MARDM-DDPM-XL', 'MARDM-SiT-XL'])
-    parser.add_argument('--checkpoint_name', type=str, default='final_diffmlp_diff_v4_cfg_cross_batch_hybrid_ema_fix_best_fid.tar')
+    # parser.add_argument('--checkpoint_name', type=str, default='final_diffmlp_diff_v4_cfg_cross_batch_hybrid_ema_fix_best_fid.tar')
+    # Same weights as evaluate_vista.py (the checkpoint behind the reported results).
+    parser.add_argument('--checkpoint_name', type=str, default='final_diffmlp_diff_v4_cfg_cross_batch_hybrid_ema_fix.tar')
     parser.add_argument('--checkpoint_key', type=str, default='ema_mardm')
     
     # AE/DAE arguments

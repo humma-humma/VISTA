@@ -1,7 +1,7 @@
 """
 Comprehensive Evaluation Script for MARDM with Dual-AdaLN Style Conditioning
 
-Uses the same data loading strategy as train_MARDM.py:
+Uses the same data loading strategy as train_vista.py:
 - Text2MotionDatasetCombined_v4 for combined 100STYLES + HumanML3D data
 - mld_collate_paired for batch collation
 - Same val/test split strategy
@@ -19,10 +19,10 @@ Metrics computed:
 
 Usage:
     # Full evaluation
-    python evaluate_MARDM.py --checkpoint path/to/checkpoint.tar --eval_mode full
+    python evaluate_vista.py --checkpoint path/to/checkpoint.tar --eval_mode full
     
     # Only styled evaluation
-    python evaluate_MARDM.py --checkpoint path/to/checkpoint.tar --eval_mode styled
+    python evaluate_vista.py --checkpoint path/to/checkpoint.tar --eval_mode styled
 """
 
 
@@ -48,7 +48,7 @@ from models.MARDM import MARDM_models
 from models.LengthEstimator import LengthEstimator
 from models.refinement import TrajectoryRefinementNet
 
-# Dataset imports - SAME AS train_MARDM.py
+# Dataset imports - SAME AS train_vista.py
 from utils.datasets import (
     Text2MotionDatasetCombined_v4,
     Text2MotionDatasetCombined_v5,
@@ -498,7 +498,7 @@ def evaluate_base_generation(model, ae, eval_loader, eval_wrapper, device, mean,
     with torch.no_grad():
         with tqdm(total=len(eval_loader), desc="Base Evaluation") as pbar:
             for batch_idx, batch_data in enumerate(eval_loader):
-                # Extract HumanML3D data from combined batch (same as train_MARDM.py)
+                # Extract HumanML3D data from combined batch (same as train_vista.py)
                 z_hml3d = batch_data['latent_humanml'].to(device)
                 len_hml3d = batch_data['length_humanml'].to(device)
                 text_hml3d = batch_data['text_humanml']
@@ -615,7 +615,7 @@ def evaluate_styled_generation(model, dae, eval_loader, eval_wrapper, device, me
     Evaluate style-conditioned generation (100STYLES text + video → stylized motion).
     Uses 'motion_styled', 'video_styled', etc. from the combined dataset batch.
     
-    This matches the training PASS 2 in train_MARDM.py.
+    This matches the training PASS 2 in train_vista.py.
     """
     print("\n" + "=" * 70)
     print("STYLED GENERATION EVALUATION (100STYLES Text + Video → Stylized Motion)")
@@ -636,18 +636,18 @@ def evaluate_styled_generation(model, dae, eval_loader, eval_wrapper, device, me
     with torch.no_grad():
         with tqdm(total=len(eval_loader), desc="Styled Evaluation") as pbar:
             for batch_idx, batch_data in enumerate(eval_loader):
-                # Extract 100STYLES data from combined batch (same as train_MARDM.py PASS 2)
+                # Extract 100STYLES data from combined batch (same as train_vista.py PASS 2)
                 motion_style = batch_data['motion_styled'].float().to(device)
                 len_style = batch_data['length_styled'].to(device) // 4
                 text_style = batch_data['text_styled']
                 video_style = batch_data['video_styled']
                 style_names = batch_data.get('style_name', ['unknown'] * motion_style.shape[0])
                 
-                # Process video through video encoder (same as train_MARDM.py)
+                # Process video through video encoder (same as train_vista.py)
                 inputs = processor(video_style, return_tensors="pt").to(device)
                 vid_tensors = vmodel(**inputs).last_hidden_state
                 
-                # Encode motion and get style latents (same as train_MARDM.py)
+                # Encode motion and get style latents (same as train_vista.py)
                 z_style, raw_video_latents = dae.encode(motion_style, vid_tensors)
                 
                 # Generate with style (same as training)
@@ -950,7 +950,7 @@ def evaluate_style_transfer(model, dae, ae, eval_loader, eval_wrapper, device, m
 #################################################################################
 
 def main(args):
-    # Set seed (same as train_MARDM.py)
+    # Set seed (same as train_vista.py)
     set_seed(args.seed)
     
     # Device setup
@@ -959,7 +959,7 @@ def main(args):
     if device.type == 'cuda':
         print(f"  GPU: {torch.cuda.get_device_name(args.device)}")
     
-    # Enable TF32 for faster computation (same as train_MARDM.py)
+    # Enable TF32 for faster computation (same as train_vista.py)
     torch.backends.cuda.matmul.allow_tf32 = True
     torch.backends.cudnn.allow_tf32 = True
     
@@ -967,10 +967,10 @@ def main(args):
     #                    Data Setup                                                 #
     #################################################################################
     print("\n" + "=" * 70)
-    print("LOADING DATA (Same strategy as train_MARDM.py)")
+    print("LOADING DATA (Same strategy as train_vista.py)")
     print("=" * 70)
     
-    # Paths - exactly as in train_MARDM.py
+    # Paths - exactly as in train_vista.py
     data_root = f'{args.dataset_dir}/100STYLE-SMPL/'
     prior_data_root = f'{args.dataset_dir}/HumanML3D/'
     dim_pose = 67
@@ -992,7 +992,7 @@ def main(args):
     prior_std = np.load(pjoin(prior_data_root, 'Std.npy'))[:dim_pose]
     prior_val_split_file = pjoin(prior_data_root, 'splits_sliced/val.txt')
     
-    # Create combined dataset (same as train_MARDM.py)
+    # Create combined dataset (same as train_vista.py)
     print("Initializing Dataset...")
     val_dataset_full = Text2MotionDatasetCombined_v4(
         style_mean=mean, style_std=std, style_split_file=val_split_file, 
@@ -1002,7 +1002,7 @@ def main(args):
         dim_pose=dim_pose, unit_length=args.unit_length, max_motion_length=args.max_motion_length, epoch_mode='100styles',
     )
     
-    # Split into val/test (same as train_MARDM.py)
+    # Split into val/test (same as train_vista.py)
     val_size = len(val_dataset_full) * 2 // 3
     test_size = len(val_dataset_full) - val_size
     
@@ -1014,7 +1014,7 @@ def main(args):
     
     print(f"Dataset loaded - full val: {len(val_dataset_full)}, val: {len(val_dataset)}, test: {len(test_dataset)}")
     
-    # Create DataLoaders (same as train_MARDM.py)
+    # Create DataLoaders (same as train_vista.py)
     val_loader = DataLoader(
         val_dataset, batch_size=args.batch_size, shuffle=False,
         num_workers=args.num_workers, pin_memory=True, drop_last=False,
@@ -1045,7 +1045,7 @@ def main(args):
     ae.load_state_dict(ckpt[model_key])
     ae.to(device).eval()
     
-    # Load DAE (same as train_MARDM.py)
+    # Load DAE (same as train_vista.py)
     print("\nLoading DAE for 100STYLES...")
     dae = DAE_models[args.ae_model](window_size=args.window_size, num_style_classes=num_classes, input_width=dim_pose)
     dae_ckpt_path = args.dae_ckpt or pjoin(args.checkpoints_dir, '100styles', args.ae_name, 'final_finetune_diffmlp_decoder_fixed_hybrid_ema_fix.tar')
@@ -1054,7 +1054,7 @@ def main(args):
     dae.load_state_dict(dae_ckpt['ae'])
     dae.to(device).eval()
     
-    # Load Video Encoder (same as train_MARDM.py)
+    # Load Video Encoder (same as train_vista.py)
     print(f"\nLoading video encoder ({args.video_encoder})...")
     MODEL_CONFIG = {
         'vivit': {"name": "google/vivit-b-16x2-kinetics400", "processor": "google/vivit-b-16x2-kinetics400"},
@@ -1072,7 +1072,7 @@ def main(args):
     for p in vmodel.parameters():
         p.requires_grad = False
     
-    # Load MARDM (same structure as train_MARDM.py)
+    # Load MARDM (same structure as train_vista.py)
     print(f"\nLoading MARDM ({args.model})...")
     mardm = MARDM_models[args.model](
         ae_dim=dae.output_emb_width, 
@@ -1086,7 +1086,7 @@ def main(args):
     _, w_schedule1, style_router = load_checkpoint(mardm, mardm_ckpt_path, device, key=args.checkpoint_key)
     mardm.to(device).eval()
     
-    # Create style weight schedule (same as train_MARDM.py)
+    # Create style weight schedule (same as train_vista.py)
     w_schedule = get_style_weight_schedule(mardm, args)
     print(f"Style weight schedule: {len(w_schedule)} blocks, range [{w_schedule[0]:.2f}, {w_schedule[-1]:.2f}]")
     
@@ -1115,7 +1115,7 @@ def main(args):
     # Load style classifier for SRA
     style_classifier = None
     style_to_idx = None
-    # Default checkpoint path matches train_MARDM.py
+    # Default checkpoint path matches train_vista.py
     sc_ckpt_path = args.style_classifier_ckpt or pjoin(args.checkpoints_dir, 'style_classifier', 'style_classifier_final.pt')
     if os.path.exists(sc_ckpt_path):
         print(f"\nLoading style classifier from: {sc_ckpt_path}")
@@ -1277,9 +1277,9 @@ if __name__ == "__main__":
     parser.add_argument('--max_motion_length', type=int, default=196)
     parser.add_argument('--unit_length', type=int, default=4)
     parser.add_argument('--styles', type=str, nargs='+', default=["Aeroplane", "Chicken", "Robot", "Superman", "ArmsFolded"])
-    parser.add_argument('--tiny', action='store_true', help='Use tiny dataset mode (same as train_MARDM.py)')
+    parser.add_argument('--tiny', action='store_true', help='Use tiny dataset mode (same as train_vista.py)')
     
-    # Style classifier arguments (for SRA metric) — defaults match train_MARDM.py
+    # Style classifier arguments (for SRA metric) — defaults match train_vista.py
     parser.add_argument('--style_classifier_ckpt', type=str, default=None, help='Path to pre-trained style classifier checkpoint. Defaults to checkpoints/style_classifier/style_classifier_final.pt')
     parser.add_argument('--style_cls_latent_dim', type=int, default=512, help='Style classifier hidden dimension')
     parser.add_argument('--style_cls_ff_size', type=int, default=1024, help='Style classifier feedforward size')

@@ -12,7 +12,7 @@ set -euo pipefail
 
 DAE_CKPT=${DAE_CKPT:-checkpoints/100styles/DAE/epoch_119_detach_nostyle_disc.tar}   # Stage-1 output
 
-python train_MARDM.py \
+python train_vista.py \
   --name VISTA --model MARDM-DDPM-XL --dataset_name t2m \
   --ae_name DAE --ae_model DAE_Model --dae_ckpt "$DAE_CKPT" \
   --styles Aeroplane Chicken Robot Superman ArmsFolded --video_encoder vivit \

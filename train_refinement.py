@@ -623,7 +623,8 @@ def train_unified(args):
     # mardm_ckpt_path = pjoin(args.checkpoints_dir, '100styles', args.model_dir, 'model', 'final.tar')
 
     dae_ckpt_path = pjoin(args.checkpoints_dir, '100styles', 'DAE', 'final_finetune_diffmlp_decoder_fixed_hybrid_ema_fix.tar')
-    mardm_ckpt_path = pjoin(args.checkpoints_dir, 't2m', 'MARDM-DDPM-XL', 'model', 'final_diffmlp_diff_v4_cfg_cross_batch_hybrid_ema_fix_best_fid.tar')
+    # mardm_ckpt_path = pjoin(args.checkpoints_dir, 't2m', 'MARDM-DDPM-XL', 'model', 'final_diffmlp_diff_v4_cfg_cross_batch_hybrid_ema_fix_best_fid.tar')
+    mardm_ckpt_path = pjoin(args.checkpoints_dir, 't2m', 'MARDM-DDPM-XL', 'model', 'final_diffmlp_diff_v4_cfg_cross_batch_hybrid_ema_fix.tar')
 
     num_classes = len(args.styles) if hasattr(args, 'styles') and args.styles else 5
     dae = DAE_models[args.ae_model](

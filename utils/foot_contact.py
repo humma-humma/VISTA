@@ -235,7 +235,7 @@ def apply_foot_lock_solver(motion, contact_mask=None, lengths=None):
 
 
 # =============================================================================
-# Foot sinking loss (retained from train_MARDM.py for completeness)
+# Foot sinking loss (retained from train_vista.py for completeness)
 # =============================================================================
 def compute_foot_sinking_loss(motion, lengths, floor_y=0.0):
     """

@@ -72,7 +72,7 @@ def main():
             shutil.copy2(src_f, dst_f)
             print(f"[ok] copied {name} evaluator -> {dst_f}")
 
-    # train_MARDM.py --is_continue expects the HumanML3D MARDM as humanml3d_latest.tar
+    # train_vista.py --is_continue expects the HumanML3D MARDM as humanml3d_latest.tar
     ddpm_dir = os.path.join(t2m, "MARDM-DDPM-XL", "model")
     src, dst = os.path.join(ddpm_dir, "latest.tar"), os.path.join(ddpm_dir, "humanml3d_latest.tar")
     if os.path.exists(src) and not os.path.exists(dst):

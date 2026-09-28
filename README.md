@@ -1,28 +1,36 @@
 # VISTA: Video-Injected Stylized Text-to-Animation
 
 [![arXiv](https://img.shields.io/badge/arXiv-2609.23817-b31b1b.svg)](https://arxiv.org/abs/2609.23817)
+[![CVPR 2026 Workshop](https://img.shields.io/badge/CVPR%202026-MOMA%20Workshop-4b44ce.svg)](https://arxiv.org/abs/2609.23817)
 
-Official implementation of **VISTA: Video-Injected Stylized Text-to-Animation**.
+Official implementation of **VISTA: Video-Injected Stylized Text-to-Animation**
+(Multimodal Human Motion Analysis Workshop (MOMA) at CVPR 2026).
 
 Monseej Purkayastha<sup>1</sup>, Anindita Ghosh<sup>1,2</sup>, and Philipp Slusallek<sup>1</sup>
 
 <sup>1</sup>Saarland Informatics Campus & German Research Centre for Artificial Intelligence (DFKI), Saarbrücken, Germany
 <sup>2</sup>Max Planck Institute for Informatics (MPII), Saarbrücken, Germany
 
-<p>
-  <img src="assets/gifs/Kick_ArmsFolded_LM.gif" width="32%" alt="LoRA-MDM: kick in ArmsFolded style">
-  <img src="assets/gifs/Kick_ArmsFolded_Smoo.gif" width="32%" alt="SMooDi: kick in ArmsFolded style">
-  <img src="assets/gifs/Kick_ArmsFolded_vist.gif" width="32%" alt="VISTA: kick in ArmsFolded style">
-</p>
-<p>
-  <img src="assets/gifs/Crouch_ArmsFolded.gif" width="32%" alt="VISTA: crouch in ArmsFolded style">
-  <img src="assets/gifs/Crouch_Chicken.gif" width="32%" alt="VISTA: crouch in Chicken style">
-  <img src="assets/gifs/Crouch_Robot.gif" width="32%" alt="VISTA: crouch in Robot style">
-</p>
+<table>
+  <tr>
+    <td colspan="3" align="center"><i>"A person kicks with his right leg, while walking forward."</i> + <b>ArmsFolded</b> style video</td>
+  </tr>
+  <tr>
+    <td align="center" width="33%"><img src="assets/gifs/Kick_ArmsFolded_LM.gif" width="100%" alt="LoRA-MDM: kick in ArmsFolded style"><br>LoRA-MDM</td>
+    <td align="center" width="33%"><img src="assets/gifs/Kick_ArmsFolded_Smoo.gif" width="100%" alt="SMooDi: kick in ArmsFolded style"><br>SMooDi</td>
+    <td align="center" width="33%"><img src="assets/gifs/Kick_ArmsFolded_vist.gif" width="100%" alt="VISTA: kick in ArmsFolded style"><br><b>VISTA</b></td>
+  </tr>
+  <tr>
+    <td colspan="3" align="center"><i>"A person runs forward, then crouches down."</i> (VISTA)</td>
+  </tr>
+  <tr>
+    <td align="center" width="33%"><img src="assets/gifs/Crouch_ArmsFolded.gif" width="100%" alt="VISTA: crouch in ArmsFolded style"><br>ArmsFolded</td>
+    <td align="center" width="33%"><img src="assets/gifs/Crouch_Chicken.gif" width="100%" alt="VISTA: crouch in Chicken style"><br>Chicken</td>
+    <td align="center" width="33%"><img src="assets/gifs/Crouch_Robot.gif" width="100%" alt="VISTA: crouch in Robot style"><br>Robot</td>
+  </tr>
+</table>
 
-<sub>Top: a kick with the <i>ArmsFolded</i> style from LoRA-MDM, SMooDi and VISTA. Bottom: VISTA, one crouch
-prompt with <i>ArmsFolded</i>, <i>Chicken</i> and <i>Robot</i> style videos. Original clips in
-<a href="assets/videos">assets/videos</a>.</sub>
+<sub>Playback slowed down 1.5×. MP4 versions in <a href="assets/videos">assets/videos</a>.</sub>
 
 > We present VISTA, a two-stage framework for generating stylized 3D human motion by fusing structural content from text prompts with expressive style from reference videos, without requiring jointly paired (text, video, stylized motion) triplets. A Dual-channel Autoencoder first maps motion sequences and video clips into a shared latent manifold. A masked autoregressive diffusion backbone then operates within this manifold, injecting video-derived style through a dedicated late-fusion Dual-AdaLN pathway while preserving text-conditioned content structure. A cross-batch unpaired training protocol with latent cycle consistency enables joint learning across separate semantically rich and stylistically diverse datasets. As a proof-of-concept for controllable animation synthesis, we validate VISTA on rendered motion-capture references: it achieves the highest style recognition accuracy among video-conditioned methods while preserving competitive content alignment, and its decomposed 3-way classifier-free guidance provides independent, user-controllable calibration of the content–style balance at inference time.
 
@@ -57,8 +65,7 @@ symlink `checkpoints/`, `glove/` and `body_models/` into the repository).
 checkpoints/
 ├── t2m/
 │   ├── MARDM-DDPM-XL/model/
-│   │   ├── final_diffmlp_diff_v4_cfg_cross_batch_hybrid_ema_fix.tar           # VISTA (evaluation)
-│   │   ├── final_diffmlp_diff_v4_cfg_cross_batch_hybrid_ema_fix_best_fid.tar  # VISTA (sampling)
+│   │   ├── final_diffmlp_diff_v4_cfg_cross_batch_hybrid_ema_fix.tar           # VISTA (sampling + evaluation)
 │   │   └── humanml3d_latest.tar                                               # pretrained MARDM (training init)
 │   ├── AE/model/latest.tar                                                    # HumanML3D motion AE
 │   ├── length_estimator/model/finest.tar
@@ -144,15 +151,22 @@ trained on a single NVIDIA A100 (Stage 1 about 42 h, Stage 2 about 27.5 h).
 ## Evaluation
 
 ```bash
-# Base / styled / transfer evaluation from the data loaders
+# Base, styled and transfer evaluation (FID, R-Precision, SRA, MPJPE, foot skating, diversity)
 bash scripts/04_eval_native.sh
+```
 
-# Shared-manifest benchmark (FID, R-Precision, SRA, MPJPE, foot skating, diversity)
-bash scripts/05_eval_comparative.sh
+or directly:
+
+```bash
+python evaluate_vista.py \
+    --eval_mode full \
+    --cfg_mode 3way_additive --cfg_text 4.5 --cfg_style 2.0 \
+    [optional] --use_test_set
 ```
 
 VISTA-2way uses `--cfg_mode 2way --cfg_scale 4.5`; VISTA-3way uses
 `--cfg_mode 3way_additive --cfg_text 4.5 --cfg_style 2.0`. Metrics use 18 denoising steps and seed 3407.
+Sampling (`sample_new.py`) and evaluation load the same VISTA checkpoint.
 
 <details>
 <summary>Results</summary>
@@ -194,11 +208,14 @@ python tools/aitviewer_interactive_render.py --motion_file <joints.npy>
 ## Citation
 
 ```bibtex
-@article{purkayastha2026vista,
-  title   = {{VISTA}: Video-Injected Stylized Text-to-Animation},
-  author  = {Purkayastha, Monseej and Ghosh, Anindita and Slusallek, Philipp},
-  journal = {arXiv preprint arXiv:2609.23817},
-  year    = {2026},
+@inproceedings{purkayastha2026vista,
+  title     = {{VISTA}: Video-Injected Stylized Text-to-Animation},
+  author    = {Purkayastha, Monseej and Ghosh, Anindita and Slusallek, Philipp},
+  booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Workshops,
+               Multimodal Human Motion Analysis Workshop (MOMA)},
+  year      = {2026},
+  eprint    = {2609.23817},
+  archivePrefix = {arXiv},
 }
 ```
 

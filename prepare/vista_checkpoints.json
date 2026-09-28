@@ -3,17 +3,10 @@
   "checkpoints": {
     "mardm": {
       "path": "checkpoints/t2m/MARDM-DDPM-XL/model/final_diffmlp_diff_v4_cfg_cross_batch_hybrid_ema_fix.tar",
-      "description": "Stage-2 VISTA MARDM (use key ema_mardm); evaluation and export default",
+      "description": "Stage-2 VISTA MARDM (use key ema_mardm); used for sampling and evaluation",
       "url": "",
       "sha256": "6919636b46f06dbc26596f02019b9a2a1030c032a716a3ca61744d1e6208edac",
       "size": 7829096825
-    },
-    "mardm_best_fid": {
-      "path": "checkpoints/t2m/MARDM-DDPM-XL/model/final_diffmlp_diff_v4_cfg_cross_batch_hybrid_ema_fix_best_fid.tar",
-      "description": "Stage-2 VISTA MARDM, best-FID snapshot; sample_new.py default",
-      "url": "",
-      "sha256": "58a01674a0402102e03e053f328ac0e2b5a88704520e5f89e984c736c5dd85c9",
-      "size": 7829129419
     },
     "dae": {
       "path": "checkpoints/100styles/DAE/final_finetune_diffmlp_decoder_fixed_hybrid_ema_fix.tar",
