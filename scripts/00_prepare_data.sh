@@ -8,7 +8,7 @@
 set -euo pipefail
 
 # 1) Third-party pretrained assets (MARDM base, HumanML3D AE, length estimator, evaluators, GloVe).
-python prepare/download_pretrained.py
+python prepare/download_pretrained.py --skip_sit
 python prepare/download_vista_checkpoints.py   # released VISTA checkpoints (sha256-verified)
 bash prepare/download_smpl.sh     # SMPL body model + SMPLify priors (mesh export / viewers)
 

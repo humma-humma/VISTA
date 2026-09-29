@@ -56,12 +56,32 @@ def main():
     args = ap.parse_args()
 
     t2m = os.path.join(args.root, "checkpoints", "t2m")
-    fetch_and_unzip(EVALUATORS_URL, "evaluators_humanml3d.zip", t2m)
-    fetch_and_unzip(GLOVE_URL, "glove.zip", os.path.join(args.root, "glove"))
+    # Skip a bundle when the files it provides are already in place (e.g. placed by
+    # prepare/download_vista_checkpoints.py), instead of downloading the zip again.
+    markers = {
+        "evaluators_humanml3d.zip": [os.path.join(t2m, n, "model", "finest.tar") for n in ("text_mot_match", "text_mot_match_clip")],
+        "glove.zip": [os.path.join(args.root, "glove", "our_vab_data.npy")],
+        "MARDM_SiT_XL.zip": [os.path.join(t2m, "MARDM-SiT-XL")],
+        "MARDM_DDPM_XL.zip": [os.path.join(t2m, "MARDM-DDPM-XL", "model", "humanml3d_latest.tar")],
+        "length_estimator.zip": [os.path.join(t2m, "length_estimator", "model", "finest.tar")],
+        "AE_humanml3d.zip": [os.path.join(t2m, "AE", "model", "latest.tar")],
+    }
+
+    def needed(zip_name):
+        if all(os.path.exists(p) for p in markers[zip_name]):
+            print(f"[skip] {zip_name}: already present")
+            return False
+        return True
+
+    if needed("evaluators_humanml3d.zip"):
+        fetch_and_unzip(EVALUATORS_URL, "evaluators_humanml3d.zip", t2m)
+    if needed("glove.zip"):
+        fetch_and_unzip(GLOVE_URL, "glove.zip", os.path.join(args.root, "glove"))
     for url, name in PRETRAINED:
         if args.skip_sit and name == "MARDM_SiT_XL.zip":
             continue
-        fetch_and_unzip(url, name, t2m)
+        if needed(name):
+            fetch_and_unzip(url, name, t2m)
 
     # Stage-1 evaluation (--dataset_name 100styles) loads the same evaluators from checkpoints/100styles/
     for name in ("text_mot_match", "text_mot_match_clip"):

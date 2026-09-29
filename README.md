@@ -54,10 +54,24 @@ downloaded automatically on first use. On Windows, data loading runs in the main
 
 ## Checkpoints
 
-Download the checkpoints from
-[Google Drive](https://drive.google.com/drive/folders/GDRIVE_FOLDER_ID)
-and place them in the repository root so that the layout below is matched (or keep them elsewhere and
-symlink `checkpoints/`, `glove/` and `body_models/` into the repository).
+Download everything with one command (files are fetched from Google Drive and verified against their
+SHA256 checksums):
+
+```bash
+python prepare/download_vista_checkpoints.py          # add --all for the Stage-1 DualAE and the refiner
+python prepare/download_pretrained.py --skip_sit      # MARDM base model, HumanML3D AE, length estimator
+bash prepare/download_smpl.sh                         # SMPL body model + SMPLify priors
+```
+
+Or download manually and place the files so that the layout below is matched:
+
+- [VISTA checkpoints](https://drive.google.com/drive/folders/10JsKMIM9Mj1l3NOSqoOehQATOdNSySyX?usp=sharing)
+  (MARDM, DualAE, style classifier, Stage-1 DualAE, refiner)
+- [Evaluators and GloVe](https://drive.google.com/drive/folders/1fvyiHSDnCKhUqUA-I5-zOA_5tHQ8h2IX?usp=sharing)
+  (the 244 MB `finest.tar` is `text_mot_match`, the 516 MB one is `text_mot_match_clip`; unzip `glove.zip`
+  in the repository root)
+
+Assets can also live elsewhere with `checkpoints/`, `glove/` and `body_models/` symlinked into the repository.
 
 ```text
 checkpoints/
@@ -81,15 +95,7 @@ glove/                     our_vab_data.npy, our_vab_idx.pkl, our_vab_words.pkl
 body_models/smpl/          SMPL_NEUTRAL.pkl, J_regressor_extra.npy, kintree_table.pkl, smplfaces.npy
 ```
 
-Verify the VISTA checkpoints against their SHA256 checksums:
-
-```bash
-python prepare/download_vista_checkpoints.py --verify-only
-```
-
-The MARDM base model, HumanML3D AE, length estimator, evaluators and GloVe can also be fetched from the
-original MARDM release with `python prepare/download_pretrained.py`, and the SMPL body model and
-SMPLify priors with `bash prepare/download_smpl.sh`.
+Check manually placed files with `python prepare/download_vista_checkpoints.py --verify-only`.
 
 ## Try Demo
 
