@@ -7,9 +7,10 @@
 #       --styles Aeroplane ArmsFolded Chicken Robot Superman --views front left
 set -euo pipefail
 
-# 1) Third-party pretrained assets (MARDM base, HumanML3D AE, length estimator, evaluators, GloVe).
+# 1) Checkpoints: VISTA + evaluators + GloVe (Google Drive, sha256-verified), then the MARDM base model,
+#    HumanML3D AE and length estimator from the original MARDM release.
+python prepare/download_vista_checkpoints.py
 python prepare/download_pretrained.py --skip_sit
-python prepare/download_vista_checkpoints.py   # released VISTA checkpoints (sha256-verified)
 bash prepare/download_smpl.sh     # SMPL body model + SMPLify priors (mesh export / viewers)
 
 # 2) HumanML3D: slice by caption time tags, encode with the pretrained HumanML3D AE.
