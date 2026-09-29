@@ -23,7 +23,7 @@ scikit-learn==1.5.2
 pandas==2.0.3
 matplotlib==3.8.4
 seaborn==0.13.2
-gdown==5.2.0                  # prepare/download_pretrained.py
+gdown==5.2.0                  # Google Drive downloads (prepare/download_*.py)
 
 # SMPL fitting / mesh export / visualisation
 smplx==0.1.28
